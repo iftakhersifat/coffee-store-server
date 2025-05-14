@@ -37,6 +37,13 @@ async function run() {
       res.send(result)
     });
 
+    app.get("/coffees", async(req,res)=>{
+        const cursor = coffeeCollection.find();
+        const showResult = await cursor.toArray();
+        res.send(showResult)
+
+    })
+
 
     await client.db("admin").command({ ping: 1 });
     console.log("✅ Connected to MongoDB!");
