@@ -53,6 +53,14 @@ async function run() {
   res.send(resultShow);
 });
 
+// single id show
+app.get("/coffees/:id", async(req, res)=>{
+        const id= req.params.id;
+        const query = {_id: new ObjectId(id)}
+        const resultShow = await coffeeCollection.findOne(query)
+        res.send(resultShow)
+    })
+
 
 
     await client.db("admin").command({ ping: 1 });
