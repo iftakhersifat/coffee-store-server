@@ -61,6 +61,20 @@ app.get("/coffees/:id", async(req, res)=>{
         res.send(resultShow)
     })
 
+    //  for update
+    app.put("/coffees/:id", async(req,res)=>{
+      const id =req.params.id;
+      const filter= {_id: new ObjectId(id)}
+      const resultShows = req.body;
+      const updateDoc={
+        $set: resultShows
+      }
+      const options ={upsert: true};
+      const results=await coffeeCollection.updateOne(filter, updateDoc, options);
+      console.log(resultShows)
+      res.send(results)
+    })
+
 
 
     await client.db("admin").command({ ping: 1 });
