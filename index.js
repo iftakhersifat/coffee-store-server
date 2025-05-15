@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const cors = require('cors');
 const app = express();
@@ -37,12 +37,22 @@ async function run() {
       res.send(result)
     });
 
+    // get data
     app.get("/coffees", async(req,res)=>{
         const cursor = coffeeCollection.find();
         const showResult = await cursor.toArray();
         res.send(showResult)
 
     })
+
+    // for delete 
+    app.delete("/coffees/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+  const resultShow = await coffeeCollection.deleteOne(query);
+  res.send(resultShow);
+});
+
 
 
     await client.db("admin").command({ ping: 1 });
