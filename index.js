@@ -34,66 +34,89 @@ async function run() {
     
     // users to insert into MongoDB
     app.post('/users', async (req, res) => {
-      const newProfile = req.body;
-      console.log('Users List:', newProfile);
-      const profile = await userCollection.insertOne(newProfile)
-      res.send(profile)
+    const newProfile = req.body;
+    console.log('Users List:', newProfile);
+    const profile = await userCollection.insertOne(newProfile)
+    res.send(profile)
     });
 
     // show users in db
     app.get("/users", async(req,res)=>{
-        const cursorUser = userCollection.find();
-        const showUsers = await cursorUser.toArray();
-        res.send(showUsers)
+    const cursorUser = userCollection.find();
+    const showUsers = await cursorUser.toArray();
+    res.send(showUsers)
 
     })
+
+    // for delete users
+    app.delete("/users/:id", async (req, res) => {
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) };
+    const resultShow = await userCollection.deleteOne(query);
+    res.send(resultShow);
+    });
+
+    // single id show
+    app.get("/users/:id", async(req, res)=>{
+    const id= req.params.id;
+    const query = {_id: new ObjectId(id)}
+    const resultShow = await userCollection.findOne(query)
+    res.send(resultShow)
+    });
+
+
+
+
+
+
+
 
     // for coffees
 
     // POST /coffees to insert into MongoDB
     app.post('/coffees', async (req, res) => {
-      const newCoffee = req.body;
-      console.log('Received coffee:', newCoffee);
-      const result = await coffeeCollection.insertOne(newCoffee)
-      res.send(result)
+    const newCoffee = req.body;
+    console.log('Received coffee:', newCoffee);
+    const result = await coffeeCollection.insertOne(newCoffee)
+    res.send(result)
     });
 
     // get data
     app.get("/coffees", async(req,res)=>{
-        const cursor = coffeeCollection.find();
-        const showResult = await cursor.toArray();
-        res.send(showResult)
+    const cursor = coffeeCollection.find();
+    const showResult = await cursor.toArray();
+    res.send(showResult)
 
     })
 
     // for delete 
     app.delete("/coffees/:id", async (req, res) => {
-  const id = req.params.id;
-  const query = { _id: new ObjectId(id) };
-  const resultShow = await coffeeCollection.deleteOne(query);
-  res.send(resultShow);
-});
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) };
+    const resultShow = await coffeeCollection.deleteOne(query);
+    res.send(resultShow);
+    });
 
 // single id show
-app.get("/coffees/:id", async(req, res)=>{
-        const id= req.params.id;
-        const query = {_id: new ObjectId(id)}
-        const resultShow = await coffeeCollection.findOne(query)
-        res.send(resultShow)
+    app.get("/coffees/:id", async(req, res)=>{
+    const id= req.params.id;
+    const query = {_id: new ObjectId(id)}
+    const resultShow = await coffeeCollection.findOne(query)
+    res.send(resultShow)
     })
 
     //  for update
     app.put("/coffees/:id", async(req,res)=>{
-      const id =req.params.id;
-      const filter= {_id: new ObjectId(id)}
-      const resultShows = req.body;
-      const updateDoc={
-        $set: resultShows
-      }
-      const options ={upsert: true};
-      const results=await coffeeCollection.updateOne(filter, updateDoc, options);
-      console.log(resultShows)
-      res.send(results)
+    const id =req.params.id;
+    const filter= {_id: new ObjectId(id)}
+    const resultShows = req.body;
+    const updateDoc={
+      $set: resultShows
+    }
+    const options ={upsert: true};
+    const results=await coffeeCollection.updateOne(filter, updateDoc, options);
+    console.log(resultShows)
+    res.send(results)
     })
 
 
