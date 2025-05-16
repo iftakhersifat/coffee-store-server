@@ -64,6 +64,20 @@ async function run() {
     res.send(resultShow)
     });
 
+    //  for update
+    app.put("/users/:id", async(req,res)=>{
+    const id =req.params.id;
+    const filter= {_id: new ObjectId(id)}
+    const resultShows = req.body;
+    const updateDoc={
+      $set: resultShows
+    }
+    const options ={upsert: true};
+    const results=await userCollection.updateOne(filter, updateDoc, options);
+    console.log(resultShows)
+    res.send(results)
+    })
+
 
 
 
@@ -97,7 +111,7 @@ async function run() {
     res.send(resultShow);
     });
 
-// single id show
+    // single id show
     app.get("/coffees/:id", async(req, res)=>{
     const id= req.params.id;
     const query = {_id: new ObjectId(id)}
