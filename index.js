@@ -26,8 +26,29 @@ async function run() {
   try {
     await client.connect();
  
-    // from mongo
+    // from mongo for coffees
     const coffeeCollection = client.db("coffeeDB").collection("coffees");
+    const userCollection = client.db("coffeeDB").collection("users");
+
+    // users profile
+    
+    // users to insert into MongoDB
+    app.post('/users', async (req, res) => {
+      const newProfile = req.body;
+      console.log('Users List:', newProfile);
+      const profile = await coffeeCollection.insertOne(newProfile)
+      res.send(profile)
+    });
+
+    // show users in db
+    app.get("/users", async(req,res)=>{
+        const cursorUser = coffeeCollection.find();
+        const showUsers = await cursorUser.toArray();
+        res.send(showUsers)
+
+    })
+
+    // for coffees
 
     // POST /coffees to insert into MongoDB
     app.post('/coffees', async (req, res) => {
