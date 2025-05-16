@@ -36,13 +36,13 @@ async function run() {
     app.post('/users', async (req, res) => {
       const newProfile = req.body;
       console.log('Users List:', newProfile);
-      const profile = await coffeeCollection.insertOne(newProfile)
+      const profile = await userCollection.insertOne(newProfile)
       res.send(profile)
     });
 
     // show users in db
     app.get("/users", async(req,res)=>{
-        const cursorUser = coffeeCollection.find();
+        const cursorUser = userCollection.find();
         const showUsers = await cursorUser.toArray();
         res.send(showUsers)
 
