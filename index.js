@@ -78,6 +78,19 @@ async function run() {
     res.send(results)
     })
 
+    // for signin
+    app.patch("/users", async(req,res)=>{
+      const {email, lastSignInTime} =req.body;
+      const filter ={email: email}
+      const updateDOC ={
+        $set: {
+          lastSignInTime: lastSignInTime
+        }
+      }
+      const result =await userCollection.updateOne(filter, updateDOC )
+      res.send(result)
+
+    })
 
 
 
